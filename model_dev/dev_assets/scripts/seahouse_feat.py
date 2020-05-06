@@ -5,7 +5,7 @@ import numpy as np
 
 sns.set(style='whitegrid')
 
-df = pd.read_csv("/Users/brien/git_projects/seattle_housing/kc_house_data.csv")
+df = pd.read_csv("~/git_projects/seattle_housing/data/kc_house_data.csv")
 
 df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
 
