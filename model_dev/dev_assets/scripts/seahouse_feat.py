@@ -5,7 +5,7 @@ import numpy as np
 
 sns.set(style='whitegrid')
 
-df = pd.read_csv("~/git_projects/seattle_housing/data/kc_house_data.csv")
+df = pd.read_csv("~/git_projects/seattle_housing/data/seahouse_data.csv.tar.bz2")
 
 df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
 
@@ -25,12 +25,9 @@ df = df.join(zip_avg, on='zipcode', how='outer', rsuffix='_zip_avg')
 
 df['rel_sizezip'] = (df['sqft_living'] / df['sqft_living_zip_avg'])
 
-# print(df.columns)
+df.loc[:, 'is_renovated'] = 0
+df.loc[df['yr_renovated'] != 0, 'is_renovated'] = 1
 
-# df['yard_sqft'] =
-# plt.hist(df['sqft_living'], bins=50, label='living space')
-# plt.hist(df['sqft_living15'], bins=50, label='neighbors living space')
-plt.hist(df['rel_size15'], bins=50, alpha=0.5, label='living space relative to neighbors')
-plt.hist(df['rel_sizezip'], bins=50, alpha=0.5, label='living space relative to zipcode')
-plt.legend()
-plt.show()
+# calculating yard size using sqft logic
+mask = (df['floors'] == 1)
+df['yard_size'] = df.loc[mask, 'sqft_lot'] - df.loc[mask, 'sqft_above']
